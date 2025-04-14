@@ -1,0 +1,7 @@
+$h-primary-color: #B70031;
+$h-border-radius: 0;
+
+:export {
+  h-border-radius: $h-border-radius;
+  h-primary-color: $h-primary-color;
+}

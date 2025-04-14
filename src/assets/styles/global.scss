@@ -1,0 +1,43 @@
+
+*::-webkit-scrollbar {
+  /* 设置导致table表格样式错乱 */
+  width: 6px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 1px solid #E6ECF6;
+  background: #fff;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: #CAD5E5;
+}
+
+.hidden {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hidden2 {
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+ /*! autoprefixer: off */
+-webkit-box-orient: vertical;
+/* autoprefixer: on */
+  overflow: hidden;
+}
+
+// video::-webkit-media-controls {
+//   display: none !important;
+// }
+
+/* 或者隐藏特定按钮 */
+video::-webkit-media-controls-download-button {
+  display: none;
+}
+
