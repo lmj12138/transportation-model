@@ -8,3 +8,11 @@ export const getStreamsListApi=()=> {
         method: 'get',
     })
 }
+
+export const getAlarmEventListApi=()=> {
+    // 获取所有的警报事件
+    return service({
+        url: `${prefix}/streams`,
+        method: 'get',
+    })
+}

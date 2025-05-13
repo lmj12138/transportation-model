@@ -1,43 +1,61 @@
 <template>
-  <div class="body" v-loading="videoLoading">
-    <div class="map" v-if="!videoLoading">
-      <AMapComponent :markerList="markerList" :mqData="mqData"></AMapComponent>
-    </div>
-    <div class="audio">
-      <VideoComponent v-for="(video, index) in videoList" :key="index" :videoSrc="video.url" :videoId="video.id"
-        :videoInfo="video" :videoIndex="index" @videoClick="handleVideoClick" />
+  <div class="transportationModel">
+    <div class="body" v-loading="videoLoading">
+      <div class="map" v-if="!videoLoading">
+        <AMapComponent :markerList="markerList" :mqData="mqData"></AMapComponent>
+      </div>
+      <div class="right">
+        <VideoComponent :videoList="videoList" @videoClick="handleVideoClick" @showViewReplay="showViewReplay" />
+        <AlarmEvent @showAlarmEventModal="showAlarmEventModal" />
+      </div>
     </div>
     <el-dialog :visible.sync="dialogVisible" width="50%" :title="dialogTitle" :before-close="handleClose">
       <div class="dialog-body">
         <video id="videoDialog1" controls controlsList="nodownload"></video>
       </div>
     </el-dialog>
+    <ViewReplayModal :visible="viewReplayVisible" :title="viewReplayTitle" @closeDialog="closeDialog"></ViewReplayModal>
+    <AlarmEventModal :visible="alarmEventVisible" :title="alarmEventTitle" @closeDialog="closeDialog">
+    </AlarmEventModal>
   </div>
 </template>
 
 <script>
-import Stomp from "stompjs";
 import Hls from './hls.js';
 import AMapComponent from './component/AMapComponent';
 import VideoComponent from './component/VideoComponent';
+import AlarmEvent from './component/AlarmEvent';
+import AlarmEventModal from './component/AlarmEventModal.vue';
+import ViewReplayModal from './component/ViewReplayModal.vue';
 import { getStreamsListApi } from "../../api/api.js";
 export default {
   data() {
     return {
+      nowTime: "",//当前的时间
       videoLoading: false,
       markerList: [],//地图标记数据
       videoList: [],//视频数据数据
       dialogVisible: false,
       dialogTitle: '',
       currentVideo: '',
-      client: null,
-      isConnecting: false,
-      mqData: null,
+      currentLineInfo: null,//当前线路的信息
+      /* 回看视频弹框 开始*/
+      viewReplayVisible: false,//会看视频弹框
+      viewReplayTitle: "",//会看视频弹框
+      /* 回看视频弹框 结束*/
+      /* 回看视频弹框 开始*/
+      alarmEventVisible: false,//会看视频弹框
+      alarmEventTitle: "",//会看视频弹框
+      /* 回看视频弹框 结束*/
     };
   },
+  props: ["mqData"],
   components: {
     AMapComponent,
     VideoComponent,
+    AlarmEvent,
+    AlarmEventModal,
+    ViewReplayModal,
   },
   methods: {
     handleVideoClick(videoInfo) {
@@ -55,59 +73,54 @@ export default {
       this.currentVideo = '';
       this.dialogVisible = false;
     },
-    // 初始化链接mq
-    init() {
-      if (this.client || this.isConnecting) return;
-      this.isConnectin = true;
-      this.client = Stomp.client(window._config.baseMqUrl);
-      this.client.debug = () => { };
-      this.client.connect({},
-        (frame) => {// 链接队列并获取消息
-          console.log('Connected:', frame)
-          this.client.subscribe("/topic/trafficai.events", (message) => {
-            // 获取mq链接的消息
-            console.log('收到消息:', message.body);
-            const data = JSON.parse(message.body);
-            this.mqData = Object.assign({}, data)
-            this.isConnecting = false;
-            // 成功链接上队列之后收获消息
-          });
-
-        }, (error) => {
-          // 链接失败或者端口链接时 尝试从新链接
-          setTimeout(() => {
-            this.isConnecting = false;
-            this.init();
-          }, 3000);
-          console.error('Connection failed: ', error);
-        });
-    },
     getStreamsList() {
-      this.videoList = [];
-      this.videoLoading = true;
-      getStreamsListApi().then((res) => {
-        this.videoList = res;
-        this.markerList = res;
-        const videoVirtualData = window._config.videoVirtualData ? window._config.videoVirtualData : [];
-        this.videoList = this.videoList.concat(videoVirtualData);
-        this.videoLoading = false;
-      }).catch((error) => {
-        console.log("获取视频错误", error);
-        this.videoLoading = false;
-      })
+      // this.videoLoading = true;
+      // getStreamsListApi().then((res) => {
+      //   this.videoList = res;
+      //   this.markerList = res;
+      //   // const videoVirtualData = window._config.videoVirtualData ? window._config.videoVirtualData : [];
+      //   // this.videoList = this.videoList.concat(videoVirtualData);
+      //   this.videoLoading = false;
+      // }).catch((error) => {
+      //   console.log("获取视频错误", error);
+      //   this.videoLoading = false;
+      // })
     },
+    // 点击查看更多
+    showViewReplay() {
+      this.viewReplayVisible = true;
+      this.viewReplayTitle = "回放查看";
+    },
+    // 点击查看更多
+    showAlarmEventModal() {
+      this.alarmEventVisible = true;
+      this.alarmEventTitle = "警报事件";
+    },
+    // 点击关闭弹框
+    closeDialog() {
+      this.viewReplayVisible = false;
+      this.viewReplayTitle = "";
+      this.alarmEventVisible = false;
+      this.alarmEventTitle = ""
+    }
   },
   created() {
-    // 初始化链接mq
-    this.init();
     // 获取视频相关信息
     this.getStreamsList();
+    // 获取当前时间
+    this.getCurrentDateAndWeek();
   },
 };
 </script>
 <style lang="scss" scoped>
+.transportationModel {
+  width: 100%;
+  height: calc(100% - 73px);
+}
+
 .body {
-  background-color: rgb(3, 52, 71);
+  background-color: rgba(27, 20, 69, 1);
+  padding: 18px 20px 10px;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -120,15 +133,10 @@ export default {
     height: 100%;
   }
 
-  .audio {
-    overflow: auto;
+  .right {
     width: 40%;
-    height: calc(100% - 40px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
   }
 }
 

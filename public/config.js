@@ -1,6 +1,6 @@
 window._config = {
     baseUrl: 'api',    
-    baseMqUrl:"ws://49.52.4.57:18000/ws/events",
+    baseMqUrl:"ws://49.52.4.26:18000/ws/events",
     key:"2ec1538196c064f589303062e8a980d3",
     videoVirtualData:[
         {

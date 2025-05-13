@@ -18,10 +18,25 @@ VueRouter.prototype.replace = function replace(location) {
 const routes = [
   {
     path: "/",
-    name: "交通大模型",
+    name: "index",
     component: () =>
-      import("../views/transportationModel/TransportationModel.vue"),
-  },
+      import("../views/home/Index.vue"),
+    redirect: "/home",
+    children: [
+      {
+        path: "/home",
+        name: "交通大模型",
+        component: () =>
+          import("../views/transportationModel/TransportationModel.vue"),
+      },
+      {
+        path: "/alarmEvent",
+        name: "警报事件",
+        component: () =>
+          import("../views/alarmEvent/AlarmEventList.vue"),
+      },
+    ]
+  }
 ];
 
 export const asyncRouterMap = [];

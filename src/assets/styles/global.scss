@@ -1,4 +1,3 @@
-
 *::-webkit-scrollbar {
   /* 设置导致table表格样式错乱 */
   width: 6px;
@@ -26,9 +25,9 @@
   -webkit-line-clamp: 2;
   display: -webkit-box;
   text-overflow: ellipsis;
- /*! autoprefixer: off */
--webkit-box-orient: vertical;
-/* autoprefixer: on */
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
   overflow: hidden;
 }
 
@@ -41,3 +40,289 @@ video::-webkit-media-controls-download-button {
   display: none;
 }
 
+.page-block {
+  padding-top: 10px;
+  text-align: right;
+
+  ::v-deep(.el-pagination.is-background .el-pager li:not(.disabled).active) {
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+
+  ::v-deep(.el-pagination.is-background .el-pager li:not(.disabled):hover) {
+    // background-color: #004ab7;
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+
+  .el-pagination.is-background .btn-prev,
+  .el-pagination.is-background .btn-next {
+    background-color: rgba(255, 255, 255, 0.24);
+    color: #fff; // 文字颜色
+  }
+
+  // 鼠标悬停时的背景颜色
+  .el-pagination.is-background .btn-prev:hover,
+  .el-pagination.is-background .btn-next:hover {
+    background-color: rgba(255, 255, 255, 0.24);
+  }
+}
+
+// 添加自定义样式
+.transparent-select,
+.transparent-select .el-select__dropdown {
+  // background-color: transparent !important;
+  background-color: #291F65 !important;
+}
+
+.transparent-select .el-input__inner {
+  background-color: transparent !important;
+  border-color: transparent !important; // 可根据需要调整边框颜色
+  color: #fff; // 可根据需要调整文字颜色
+  font-size: 20px;
+}
+
+.transparent-select .el-option {
+  // background-color: transparent !important;
+  background-color: #291F65 !important;
+  color: #fff; // 可根据需要调整选项文字颜色
+}
+
+.transparent-select .el-option:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important; // 可根据需要调整悬停背景颜色
+}
+
+
+
+.vidio-select,
+.vidio-select .el-select__dropdown {
+  background-color: rgba(255, 255, 255, 0.24) !important;
+  border-radius: 0px !important;
+}
+
+.vidio-select .el-input__inner {
+  background-color: rgba(255, 255, 255, 0.24) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #fff; // 可根据需要调整文字颜色
+  font-size: 16px;
+  border-radius: 0px !important;
+}
+
+.vidio-select .el-option {
+  // background-color: transparent !important;
+  background-color: rgba(255, 255, 255, 0.24) !important;
+  color: #fff; // 可根据需要调整选项文字颜色
+}
+
+.vidio-select .el-option:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important; // 可根据需要调整悬停背景颜色
+}
+
+.vidio-select {
+  height: 50px;
+
+  // 调整选择框输入框高度和垂直居中
+  .el-input__inner {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  // 调整下拉选项高度和垂直居中
+  .el-select-dropdown__item {
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+.dialog-select,
+.dialog-select .el-select__dropdown {
+  background-color: #191243 !important;
+  border-radius: 0px !important;
+}
+
+.dialog-select .el-input__inner {
+  background-color: #191243 !important;
+  border-color: #191243 !important;
+  color: #fff; // 可根据需要调整文字颜色
+  font-size: 16px;
+  border-radius: 0px !important;
+}
+
+.dialog-select .el-option {
+  // background-color: transparent !important;
+  background-color: #191243 !important;
+  color: rgba(255, 255, 255, 0.24); // 可根据需要调整选项文字颜色
+}
+
+.dialog-select .el-option:hover {
+  background-color: #191243 !important; // 可根据需要调整悬停背景颜色
+}
+
+.dialog-select {
+  height: 35px;
+
+  // 调整选择框输入框高度和垂直居中
+  .el-input__inner {
+    height: 35px;
+    line-height: 35px;
+    border-color: #191243 !important;
+  }
+
+  .el-range-editor.el-input__inner {
+    border-color: #191243 !important;
+  }
+
+  // 调整下拉选项高度和垂直居中
+  .el-select-dropdown__item {
+    height: 35px;
+    line-height: 35px;
+  }
+
+  .el-range-input {
+    background-color: #191243 !important;
+    border-color: #191243
+  }
+
+  .el-input__icon {
+    line-height: 35px !important;
+  }
+
+  .el-range__icon {
+    line-height: 35px !important;
+  }
+}
+
+
+.label-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 10px;
+
+  &>span {
+    color: #589cff;
+    font-size: 14px;
+  }
+
+  ::v-deep(.el-input__inner) {
+    border-radius: 0;
+  }
+
+  .label-style {
+    display: block;
+    margin-bottom: 5px; // 可以根据需要调整这个值
+  }
+}
+
+
+::v-deep(.alarmEventList .el-table) {
+  background-color: #4C476B; // 修改表格背景颜色
+  color: #fff !important; // 修改表格字体颜色
+}
+
+::v-deep(.alarmEventList .el-table__header-wrapper th) {
+  background-color: rgba(25, 18, 67, 0.6); // 修改表头背景颜色
+  color: #fff !important; // 修改表格字体颜色
+  height: 35px;
+  line-height: 35px;
+}
+
+::v-deep(.alarmEventList .el-table__body-wrapper td) {
+  // 修改表格 body 背景颜色
+  background-color: #4C476B;
+  // 修改表格 body 字体颜色
+  color: #fff;
+}
+
+::v-deep(.alarmEventList .el-table__body tr:hover > td) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+::v-deep(.v-dialog) {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  background-color: #4C476B;
+  color: #fff;
+
+
+  .el-pagination__sizes {
+    width: 110px;
+  }
+
+  .el-dialog__header {
+    padding: 45px 50px 20px;
+
+    p {
+      text-align: left;
+
+    }
+
+    .title {
+      color: #fff;
+      font-size: 33px;
+      font-weight: bold;
+      line-height: 44px;
+    }
+
+    .little-title {
+      color: #95aac9;
+      font-size: 17px;
+      line-height: 22px;
+    }
+  }
+
+  .el-dialog__body {
+    box-sizing: border-box;
+    padding: 0 67px;
+    flex-grow: 1;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .el-table__header-wrapper .el-checkbox {
+      display: none;
+    }
+
+    .el-table {
+      flex-grow: 1;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      &:hover::-webkit-scrollbar {
+        display: block;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: #fff;
+      }
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        background-color: #fff;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        height: 20px;
+        background: rgba(144, 147, 153, 0.5);
+        border-radius: 4px;
+      }
+
+      scrollbar-color: rgba(144, 147, 153, 0.5) #fff;
+      /* 滑块颜色  滚动条背景颜色 */
+      scrollbar-width: none;
+
+      /* 滚动条宽度有三种：thin、auto、none */
+      &:hover {
+        scrollbar-width: auto;
+      }
+    }
+  }
+
+  .el-dialog__footer {
+    padding: 26px 67px 45px;
+  }
+}

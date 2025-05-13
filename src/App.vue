@@ -10,6 +10,13 @@ export default {
 };
 </script>
 <style lang="scss">
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
   font-size: 16px;
@@ -25,5 +32,6 @@ body {
   height: 100vh;
   // height: 100%;
   background-color: #dce1e9;
+  margin: 0;
 }
 </style>
