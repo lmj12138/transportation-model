@@ -1,13 +1,17 @@
 <template>
-    <div class="alarm-event">
+    <div class="alarm-event" v-loading="alarmLoading">
         <div class="top">
-            <p class="title">警报事件</p>
+            <div class="top-left">
+                <p class="title">警报事件</p>
+                <i class="el-icon-refresh" @click="getAlarmEventList"></i>
+            </div>
             <div class="more-button" @click="showAlarmEventModal">
                 查看更多
             </div>
         </div>
         <div class="alarm-bidy">
-            <div class="alarm-event-item" v-for="(item, index) in alarmEventList" :key="index">
+            <div class="alarm-event-item" v-for="(item, index) in alarmEventList" :key="index"
+                @click="handelItem(item)">
                 <div class="left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="27.671" height="24.953" viewBox="0 0 27.671 24.953">
                         <path id="减去_8" data-name="减去 8"
@@ -33,7 +37,7 @@
 export default {
     data() {
         return {
-            isVideoOpen: true,
+            alarmLoading: false,
             alarmEventList: [],//警告事件
             pageInfo: {
                 current: 1,
@@ -47,12 +51,15 @@ export default {
     methods: {
         // 获取警报事件
         getAlarmEventList() {
+            // this.alarmLoading = true;
             this.alarmEventList = [
                 { id: "NO.0001", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
                 { id: "NO.0002", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
                 { id: "NO.0003", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
                 { id: "NO.0004", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
                 { id: "NO.0005", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
+                { id: "NO.0006", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
+                { id: "NO.0007", name: "人民路中华路", begingTime: "10:00:00", endTime: "12:00:00", },
             ];
             this.pageInfo.total = 15;
             // this.$api.getAlarmEventList().then((res) => {
@@ -61,7 +68,8 @@ export default {
             //         this.alarmEventList = result;
             // this.pageInfo.total = count;
             //     }
-            // });
+            // }).finally(() => {
+            //     this.alarmLoading = false;});
         },
         changePage(val) {
             this.pageInfo.current = val;
@@ -77,7 +85,10 @@ export default {
             // 使用 window.open 方法在新窗口打开路由
             const routeUrl = this.$router.resolve({ path: '/alarmEvent' }).href;
             window.open(routeUrl, '_blank');
-        }
+        },
+        handelItem() {
+            this.$emit("showViewReplay");
+        },
     },
     mounted() {
         this.getAlarmEventList();
@@ -99,17 +110,30 @@ export default {
         justify-content: space-between;
         align-items: center;
 
-        .title {
-            font-size: 16px;
+
+
+        .top-left {
+            display: flex;
+            align-items: center;
             color: #fff;
-            font-weight: bold;
+
+            .title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-right: 10px;
+            }
+
+            i {
+                font-size: 25px;
+                cursor: pointer;
+            }
         }
 
         .more-button {
             padding: 0px 10px;
             min-width: 136px;
-            height: 50px;
-            line-height: 50px;
+            height: 40px;
+            line-height: 40px;
             color: #fff;
             background-color: rgba(255, 255, 255, 0.24);
             cursor: pointer;
@@ -123,11 +147,11 @@ export default {
 
         .alarm-event-item {
             margin-top: 10px;
-            height: 50px;
+            height: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
             background-color: rgba(255, 0, 119, 0.23);
             color: #fff;
             font-size: 13px;

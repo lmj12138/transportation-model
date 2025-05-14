@@ -77,7 +77,9 @@ export default {
 
             // 绑定点击事件
             marker.on('click', () => {
-              this.showInfoWindow(content, [item.location.latitude, item.location.longitude], marker);
+              // this.showInfoWindow(content, [item.location.latitude, item.location.longitude], marker);
+              // 点击气泡弹出回放视频弹框
+              this.$emit("showViewReplay")
             });
           });
 

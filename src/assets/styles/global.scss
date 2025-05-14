@@ -119,18 +119,18 @@ video::-webkit-media-controls-download-button {
 }
 
 .vidio-select {
-  height: 50px;
+  height: 40px;
 
   // 调整选择框输入框高度和垂直居中
   .el-input__inner {
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
   }
 
   // 调整下拉选项高度和垂直居中
   .el-select-dropdown__item {
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
   }
 }
 
@@ -188,7 +188,7 @@ video::-webkit-media-controls-download-button {
   }
 
   .el-range__icon {
-    line-height: 35px !important;
+    line-height: 26px !important;
   }
 }
 
@@ -211,6 +211,7 @@ video::-webkit-media-controls-download-button {
   .label-style {
     display: block;
     margin-bottom: 5px; // 可以根据需要调整这个值
+    text-align: left;
   }
 }
 
@@ -237,7 +238,9 @@ video::-webkit-media-controls-download-button {
 ::v-deep(.alarmEventList .el-table__body tr:hover > td) {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
-
+::v-deep(.el-table tr){
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
 ::v-deep(.v-dialog) {
   height: 80%;
   display: flex;
@@ -325,4 +328,8 @@ video::-webkit-media-controls-download-button {
   .el-dialog__footer {
     padding: 26px 67px 45px;
   }
+}
+
+.el-loading-mask{
+  // background-color: rgba(255, 255, 255, 0.5);
 }

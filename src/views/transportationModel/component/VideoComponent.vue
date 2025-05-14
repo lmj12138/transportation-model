@@ -106,7 +106,7 @@ export default {
     .back-button {
         padding: 0px 10px;
         min-width: 136px;
-        height: 50px;
+        height: 40px;
         color: #fff;
         display: flex;
         align-items: center;
@@ -122,7 +122,7 @@ export default {
     }
 
     .vidio-select {
-        height: 50px;
+        height: 40px;
         width: 334px;
     }
 }

@@ -10,23 +10,20 @@
                     <span class="label-style">筛选监控搜索</span>
                     <el-select class="dialog-select" v-model="searchInfo.monitorFilter" placeholder="请选择监控筛选"
                         @change="searchChange" style="width: 100%">
-                        <!-- 这里需要根据实际监控筛选条件动态生成选项 -->
-                        <el-option label="监控1" value="1"></el-option>
-                        <el-option label="监控2" value="2"></el-option>
+                        <el-option v-for="item in videoList" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="5">
                     <span class="label-style">日期搜索</span>
-                    <el-date-picker class="dialog-select" v-model="searchInfo.dateSearch" type="date" placeholder="选择日期"
-                        @change="searchChange" style="width: 100%">
-                    </el-date-picker>
+                    <el-date-picker class="dialog-select" v-model="searchInfo.dateSearch" value-format="timestamp"
+                        type="date" placeholder="选择日期" @change="searchChange" style="width: 100%"></el-date-picker>
                 </el-col>
                 <el-col :span="9">
                     <span class="label-style">时间段搜索</span>
                     <el-time-picker class="dialog-select" is-range v-model="searchInfo.timeRange" range-separator="~"
-                        start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围"
-                        style="width: 100%;border-color: #191243">
-                    </el-time-picker>
+                        start-placeholder="开始时间" end-placeholder="结束时间" value-format="timestamp" @change="searchChange"
+                        placeholder="选择时间范围" style="width: 100%;border-color: #191243"></el-time-picker>
                 </el-col>
                 <el-col :span="5">
                     <span class="label-style">报警类型搜索</span>
@@ -41,7 +38,8 @@
         </div>
         <div class="body">
             <div class="left">
-                <video id="video_dialog" controls controlsList="nodownload"></video>
+                <video id="video_dialog" :src="currentVideo.src" @ended="playNextVideo" controls
+                    controlsList="nodownload"></video>
             </div>
             <div class="right">
                 <div class="title-name">
@@ -72,7 +70,7 @@ export default {
             tableLoading: false,
             searchInfo: {
                 dateSearch: null, // 日期搜索
-                timeRange: [], // 时间段搜索
+                timeRange: null, // 时间段搜索
                 alarmType: '', // 报警类型搜索
             },
             // 容器列表
@@ -101,6 +99,21 @@ export default {
         searchChange() {
             this.getViewReplayList();
         },
+        // 播放下一个视频的方法
+        playNextVideo() {
+            const index = this.currentTimeList.findIndex(item => item.id === this.currentVideo.id);
+            if (index < this.currentTimeList.length - 1) {
+                this.currentVideo = Object.assign({}, this.currentTimeList[index + 1]);
+                this.$nextTick(() => {
+                    const videoElement = document.getElementById('video_dialog');
+                    if (videoElement) {
+                        videoElement.play().catch(error => {
+                            console.error('视频播放失败:', error);
+                        });
+                    }
+                });
+            }
+        },
         // 请求容器列
         getViewReplayList() {
             // this.tableLoading = true;
@@ -111,10 +124,20 @@ export default {
                 // size: this.pageInfo.size,
             };
             this.currentTimeList = [
-                { id: 0, beginTime: '10:00:00', endTime: "12:00:00", src: "" },
-                { id: 1, beginTime: '10:00:00', endTime: "12:00:00", src: "" },
+                { id: 0, beginTime: '10:00:00', endTime: "12:00:00", src: "http://49.52.4.26:19000/video-segments/sample_1/20250514/sample_1_20250514_061042.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=trafficai%2F20250514%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250514T061045Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6572f272e7a208dd8db6dd15bc52940feb0addce60c08a801b0a67693d17ce98" },
+                { id: 1, beginTime: '10:00:00', endTime: "12:00:00", src: "http://49.52.4.26:19000/video-segments/sample_1/20250514/sample_1_20250514_061042.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=trafficai%2F20250514%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250514T061045Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6572f272e7a208dd8db6dd15bc52940feb0addce60c08a801b0a67693d17ce98" },
+                { id: 2, beginTime: '10:00:00', endTime: "12:00:00", src: "http://49.52.4.26:19000/video-segments/sample_1/20250514/sample_1_20250514_061042.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=trafficai%2F20250514%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250514T061045Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6572f272e7a208dd8db6dd15bc52940feb0addce60c08a801b0a67693d17ce98" },
+                { id: 3, beginTime: '10:00:00', endTime: "12:00:00", src: "http://49.52.4.26:19000/video-segments/sample_1/20250514/sample_1_20250514_061042.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=trafficai%2F20250514%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250514T061045Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6572f272e7a208dd8db6dd15bc52940feb0addce60c08a801b0a67693d17ce98" },
             ];
             this.currentVideo = Object.assign({}, this.currentTimeList[0]);
+            this.$nextTick(() => {
+                const videoElement = document.getElementById('video_dialog');
+                if (videoElement) {
+                    videoElement.play().catch(error => {
+                        console.error('视频播放失败:', error);
+                    });
+                }
+            });
             // this.$api
             //     . getViewReplayListApi(data)
             //     .then((res) => {
@@ -136,6 +159,14 @@ export default {
             const index = this.currentTimeList.findIndex(item => item.id === this.currentVideo.id);
             if (index > 0) {
                 this.currentVideo = Object.assign({}, this.currentTimeList[index - 1]);
+                this.$nextTick(() => {
+                    const videoElement = document.getElementById('video_dialog');
+                    if (videoElement) {
+                        videoElement.play().catch(error => {
+                            console.error('视频播放失败:', error);
+                        });
+                    }
+                });
             }
         },
         // 下一个视频方法
@@ -143,6 +174,14 @@ export default {
             const index = this.currentTimeList.findIndex(item => item.id === this.currentVideo.id);
             if (index < this.currentTimeList.length - 1) {
                 this.currentVideo = Object.assign({}, this.currentTimeList[index + 1]);
+                this.$nextTick(() => {
+                    const videoElement = document.getElementById('video_dialog');
+                    if (videoElement) {
+                        videoElement.play().catch(error => {
+                            console.error('视频播放失败:', error);
+                        });
+                    }
+                });
             }
         }
     },
@@ -158,12 +197,27 @@ export default {
         loading: {
             type: Boolean,
             default: false,
-        }
+        },
+        videoList: { // 视频列表
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        prposSearchInfo: { // 视频列表
+            type: Object,
+            default: () => { return {}; },
+        },
     },
     watch: {
         visible: function (val) {
             if (val) this.getViewReplayList()
         }
+        // prposSearchInfo: function (val) {
+        //     if (val) {
+        //         this.getViewReplayList();
+        //     }
+        // }
     }
 }
 </script>

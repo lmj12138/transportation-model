@@ -2,11 +2,11 @@
   <div class="transportationModel">
     <div class="body" v-loading="videoLoading">
       <div class="map" v-if="!videoLoading">
-        <AMapComponent :markerList="markerList" :mqData="mqData"></AMapComponent>
+        <AMapComponent :markerList="markerList" :mqData="mqData" @showViewReplay="showViewReplay"></AMapComponent>
       </div>
       <div class="right">
         <VideoComponent :videoList="videoList" @videoClick="handleVideoClick" @showViewReplay="showViewReplay" />
-        <AlarmEvent @showAlarmEventModal="showAlarmEventModal" />
+        <AlarmEvent @showViewReplay="showViewReplay" />
       </div>
     </div>
     <el-dialog :visible.sync="dialogVisible" width="50%" :title="dialogTitle" :before-close="handleClose">
@@ -15,7 +15,8 @@
       </div>
     </el-dialog>
     <ViewReplayModal :visible="viewReplayVisible" :title="viewReplayTitle" @closeDialog="closeDialog"></ViewReplayModal>
-    <AlarmEventModal :visible="alarmEventVisible" :title="alarmEventTitle" @closeDialog="closeDialog">
+    <AlarmEventModal :visible="alarmEventVisible" :title="alarmEventTitle" @closeDialog="closeDialog"
+      :videoList="videoList" :prposSearchInfo="prposSearchInfo">
     </AlarmEventModal>
   </div>
 </template>
@@ -47,6 +48,12 @@ export default {
       alarmEventVisible: false,//会看视频弹框
       alarmEventTitle: "",//会看视频弹框
       /* 回看视频弹框 结束*/
+      prposSearchInfo: { // 搜索条件
+        dateSearch: null, // 日期搜索
+        timeRange: [], // 时间段搜索
+        alarmType: '', // 报警类型搜索
+        monitorFilter: '', // 筛选监控搜索
+      },//查看回放视频的数据
     };
   },
   props: ["mqData"],
@@ -74,17 +81,17 @@ export default {
       this.dialogVisible = false;
     },
     getStreamsList() {
-      // this.videoLoading = true;
-      // getStreamsListApi().then((res) => {
-      //   this.videoList = res;
-      //   this.markerList = res;
-      //   // const videoVirtualData = window._config.videoVirtualData ? window._config.videoVirtualData : [];
-      //   // this.videoList = this.videoList.concat(videoVirtualData);
-      //   this.videoLoading = false;
-      // }).catch((error) => {
-      //   console.log("获取视频错误", error);
-      //   this.videoLoading = false;
-      // })
+      this.videoLoading = true;
+      getStreamsListApi().then((res) => {
+        this.videoList = res;
+        this.markerList = res;
+        // const videoVirtualData = window._config.videoVirtualData ? window._config.videoVirtualData : [];
+        // this.videoList = this.videoList.concat(videoVirtualData);
+        this.videoLoading = false;
+      }).catch((error) => {
+        console.log("获取视频错误", error);
+        this.videoLoading = false;
+      })
     },
     // 点击查看更多
     showViewReplay() {
@@ -107,8 +114,6 @@ export default {
   created() {
     // 获取视频相关信息
     this.getStreamsList();
-    // 获取当前时间
-    this.getCurrentDateAndWeek();
   },
 };
 </script>
